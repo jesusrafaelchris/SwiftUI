@@ -380,7 +380,6 @@ Now that we've covered some foundational concepts in SwiftUI, let's try a fun ex
     struct ContentView: View {
         var body: some View {
             VStack(spacing: 40) {
-                Spacer()
                 Circle()
                     .foregroundStyle(.red)
                     .frame(width: 100, height: 100)
@@ -399,17 +398,17 @@ Now that we've covered some foundational concepts in SwiftUI, let's try a fun ex
                     }
                     .multilineTextAlignment(.center)
                 }
-                Spacer()
                 Text("I love SwiftUI")
                     .foregroundStyle(.white)
                     .padding()
-                    .frame(maxWidth: .infinity)
+                    .horizontalAlignment(.leading)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
                             .foregroundStyle(.black)
                     }
             }
             .padding()
+            .frame(maxHeight: .infinity, alignment: .center)
         }
     }
 

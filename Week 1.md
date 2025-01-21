@@ -373,48 +373,48 @@ Now that we've covered some foundational concepts in SwiftUI, let's try a fun ex
 
 <details>
   <summary>Click to reveal the answer</summary>
-```swift
-import SwiftUI
 
-struct ContentView: View {
-    var body: some View {
-        VStack(spacing: 40) {
-            Spacer()
-            Circle()
-                .foregroundStyle(.red)
-                .frame(width: 100, height: 100)
-            VStack(alignment: .center, spacing: 16) {
-                Group {
-                    Text("We’re learning how to use SwiftUI and it’s super cool")
-                        .font(.headline)
-                        .foregroundStyle(.blue)
-                    HStack {
-                        Text("I can’t wait to move onto next week’s lesson and learn about components.")
-                            .font(.subheadline)
-                        Rectangle()
-                            .foregroundStyle(.green)
-                            .frame(width: 50, height: 50)
+    
+    import SwiftUI
+
+    struct ContentView: View {
+        var body: some View {
+            VStack(spacing: 40) {
+                Spacer()
+                Circle()
+                    .foregroundStyle(.red)
+                    .frame(width: 100, height: 100)
+                VStack(alignment: .center, spacing: 16) {
+                    Group {
+                        Text("We’re learning how to use SwiftUI and it’s super cool")
+                            .font(.headline)
+                            .foregroundStyle(.blue)
+                        HStack {
+                            Text("I can’t wait to move onto next week’s lesson and learn about components.")
+                                .font(.subheadline)
+                            Rectangle()
+                                .foregroundStyle(.green)
+                                .frame(width: 50, height: 50)
+                        }
                     }
+                    .multilineTextAlignment(.center)
                 }
-                .multilineTextAlignment(.center)
+                Spacer()
+                Text("I love SwiftUI")
+                    .foregroundStyle(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundStyle(.black)
+                    }
             }
-            Spacer()
-            Text("I love SwiftUI")
-                .foregroundStyle(.white)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .foregroundStyle(.black)
-                }
+            .padding()
         }
-        .padding()
     }
-}
 
-#Preview {
-    ContentView()
-}
+    #Preview {
+        ContentView()
+    }
 
-```
-</details>
+</details> 

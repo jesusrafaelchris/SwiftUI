@@ -369,7 +369,7 @@ Rectangle()
 
 Now that we've covered some foundational concepts in SwiftUI, let's try a fun example to make a screen in SwiftUI.
 
-<img src="Week1Example.png" width=250/>
+<img src="https://github.com/user-attachments/assets/40c61111-75a2-4503-a0dd-a32024db6f0c" width=250/>
 
 <details>
   <summary>Click to reveal the answer (simpler)</summary>

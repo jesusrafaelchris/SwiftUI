@@ -372,7 +372,7 @@ Now that we've covered some foundational concepts in SwiftUI, let's try a fun ex
 <img src="Week1Example.png" width=250/>
 
 <details>
-  <summary>Click to reveal the answer</summary>
+  <summary>Click to reveal the answer (simpler)</summary>
 
     
     import SwiftUI
@@ -417,4 +417,40 @@ Now that we've covered some foundational concepts in SwiftUI, let's try a fun ex
         ContentView()
     }
 
+</details> 
+
+<details>
+  <summary>Click to reveal the answer (advanced)</summary>
+import SwiftUI
+
+struct ContentView2: View {
+    var body: some View {
+        VStack(spacing: 24) {
+            Circle()
+                .fill(.red)
+                .frame(width: 100, height: 100)
+            Text("We're learning how to use SwiftUI and it's super cool")
+                .foregroundStyle(.blue)
+                .multilineTextAlignment(.center)
+            HStack {
+                Text("I can't wait to move onto next week's lesson and learn about components.")
+                    .multilineTextAlignment(.center)
+                Rectangle()
+                    .frame(width: 50, height: 50)
+                    .foregroundStyle(.green)
+            }
+        }
+        .padding(.horizontal, 12)
+        .frame(maxHeight: .infinity)
+        .overlay(alignment: .bottom) {
+            Button("I love SwiftUI") {}
+                .foregroundStyle(.white)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                }
+        }
+    }
+}
 </details> 

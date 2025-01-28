@@ -414,89 +414,89 @@ This two-way communication is possible because of the `@Binding` property wrappe
 
 Now that we’ve explored @State, @Binding, and some key SwiftUI components, let’s try a fun example to solidify these concepts.
 
-<img src="https://github.com/user-attachments/assets/40c61111-75a2-4503-a0dd-a32024db6f0c" width=250/>
+<img src="https://github.com/user-attachments/assets/16481bbf-f6bf-491d-898b-26eaa41f0f68" width=250/>
 
 <details>
   <summary>Click to reveal the answer</summary>
-  import SwiftUI
-
-struct ParentView: View {
-    @State private var age = 0
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var isOver18: Bool = false
+  
+    import SwiftUI
     
-    var body: some View {
-        VStack {
-            Text("Enter your information")
-                .font(.title)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 32)
-            VStack(spacing: 20) {
-                TextField("Email", text: $email)
-                    .textFieldStyle(.roundedBorder)
-                SecureField("Password", text: $password)
-                    .textFieldStyle(.roundedBorder)
-                Toggle("Do you love SwiftUI?", isOn: $isOver18)
-                ChildView(age: $age)
-            }
-        }
-        .frame(maxHeight: .infinity, alignment: .center)
-        .padding()
-        .overlay(alignment: .bottom) {
-            Button {
-                print(email, password, isOver18, age)
-            } label: {
-                HStack {
-                    Text("Confirm")
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                }
-                .foregroundStyle(.white)
-                .padding()
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .foregroundStyle(.red)
+    struct ParentView: View {
+        @State private var age = 0
+        @State private var email: String = ""
+        @State private var password: String = ""
+        @State private var isOver18: Bool = false
+    
+        var body: some View {
+            VStack {
+                Text("Enter your information")
+                    .font(.title)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 32)
+                VStack(spacing: 20) {
+                    TextField("Email", text: $email)
+                        .textFieldStyle(.roundedBorder)
+                    SecureField("Password", text: $password)
+                        .textFieldStyle(.roundedBorder)
+                    Toggle("Do you love SwiftUI?", isOn: $isOver18)
+                    ChildView(age: $age)
                 }
             }
+            .frame(maxHeight: .infinity, alignment: .center)
             .padding()
+            .overlay(alignment: .bottom) {
+                Button {
+                    print(email, password, isOver18, age)
+                } label: {
+                    HStack {
+                        Text("Confirm")
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                    }
+                    .foregroundStyle(.white)
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundStyle(.red)
+                    }
+                }
+                .padding()
+            }
         }
     }
-}
-
-struct ChildView: View {
-    @Binding var age: Int
     
-    var body: some View {
-        HStack(spacing: 12) {
-            Text("Age in years: \(age)")
-            Spacer()
-            Button {
-                age += 1
-            } label: {
-                Text("+")
-                    .foregroundStyle(.white)
-                    .padding()
-                    .background {
-                        Circle()
-                    }
-            }
-            Button {
-                age -= 1
-            } label: {
-                Text("-")
-                    .padding()
-                    .foregroundStyle(.white)
-                    .background {
-                        Circle()
-                    }
+    struct ChildView: View {
+        @Binding var age: Int
+        
+        var body: some View {
+            HStack(spacing: 12) {
+                Text("Age in years: \(age)")
+                Spacer()
+                Button {
+                    age += 1
+                } label: {
+                    Text("+")
+                        .foregroundStyle(.white)
+                        .padding()
+                        .background {
+                            Circle()
+                        }
+                }
+                Button {
+                    age -= 1
+                } label: {
+                    Text("-")
+                        .padding()
+                        .foregroundStyle(.white)
+                        .background {
+                            Circle()
+                        }
+                }
             }
         }
     }
-}
-
-#Preview {
-    ParentView()
-}
-
+    
+    #Preview {
+        ParentView()
+    }
 </details> 

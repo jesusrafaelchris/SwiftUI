@@ -157,11 +157,11 @@ struct ToggleView: View {
 - When the toggle is switched, the `isOn` value is updated in the parent view, and the UI updates to reflect the new state.
 
 **Key learning**
-- @State in Parent, @Binding in Child:
-Use @State in the parent view to manage the source of truth for the state. Use @Binding in the child view to allow it to read and modify that state. This ensures a clear ownership hierarchy while enabling two-way communication.
+- `@State` in Parent, `@Binding` in Child:
+Use `@State` in the parent view to manage the source of truth for the state. Use @Binding in the child view to allow it to read and modify that state. This ensures a clear ownership hierarchy while enabling two-way communication.
 
-- The $ Symbol for Binding:
-The $ symbol is used to bind the @State property to the @Binding property, creating a shared link between the parent and child. Any updates in one are automatically reflected in the other.
+- The `$` Symbol for Binding:
+The `$` symbol is used to bind the `@State` property to the `@Binding` property, creating a shared link between the parent and child. Any updates in one are automatically reflected in the other.
 
  ### Example recap:
 

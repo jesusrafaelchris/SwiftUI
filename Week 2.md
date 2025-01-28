@@ -88,7 +88,7 @@ struct CounterView: View {
 
 ### Passing State to Children
 
-When we pass state to child views, the parent typically controls the state, while the child can only read it. This is known as parent-controlled state—the child view can access the data but cannot modify it.
+When we pass state to child views, the parent typically controls the state, while the child can only read it. This is known as parent-controlled state — the child view can access the data but cannot modify it.
 
 ### Example:
 
@@ -109,8 +109,6 @@ struct ChildView: View {
   }
 }
 ```
-
-In this example, the ParentView owns the text state and passes it to the ChildView. The ChildView receives the value of text but cannot modify it.
 
 ## 3. State Properties: @Binding
 

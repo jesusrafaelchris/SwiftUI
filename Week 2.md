@@ -194,12 +194,7 @@ A Button is initialized with:
 
 - An action: A closure defining what should happen when the button is tapped.
 - A label: The content (text, image, or custom view) displayed on the button.
-
-
-### Button Overview
-
-In SwiftUI, `Button` is one of the most fundamental components for handling user interactions. It is used to trigger actions or events when tapped. SwiftUI provides multiple ways to create and style buttons using different initializers, allowing flexibility in how you define their appearance and behavior.
-
+- 
 
 #### **Basic Button with Text Label**
 This is the simplest form of a button, displaying a text label and an action.
@@ -217,6 +212,20 @@ When designing a button, you can use a custom view as the label to allow for mor
 Button(action: {
     print("SwiftUI is so amazing!")
 }) {
+    VStack {
+        Image(systemName: "heart.fill")
+            .font(.largeTitle)
+            .foregroundColor(.red)
+        Text("Like")
+            .font(.headline)
+    }
+}
+```
+
+```swift
+Button {
+    print("SwiftUI is so amazing!")
+} label: {
     VStack {
         Image(systemName: "heart.fill")
             .font(.largeTitle)

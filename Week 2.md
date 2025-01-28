@@ -53,7 +53,6 @@ Here's a simple example, where we declare a state property of count.
 
 ```swift
     @State private var count: Int = 0
-}
 ```
 We can use the `@State` property wrapper to designate a property as a state property. 
 

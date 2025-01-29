@@ -111,17 +111,17 @@ struct ChildView: View {
 
 ## 3. State Properties: @Binding
 
-Sometimes, we want a child view to modify state that is managed by its parent. In such cases, SwiftUI provides the @Binding property wrapper.
+Sometimes, we want a child view to modify state that is managed by its parent. In such cases, SwiftUI provides the `@Binding` property wrapper.
 
-@Binding creates a two-way connection between a parent’s state and the child view. This allows the child to read the state and also modify it, while keeping the source of truth in the parent.
+`@Bindin`g creates a two-way connection between a parent’s state and the child view. This allows the child to read the state and also modify it, while keeping the source of truth in the parent.
 
-## How @Binding Works
+### How @Binding Works
 
-With @Binding, we declare that a property in the child view is not owned by the child but instead references a value managed elsewhere — typically the parent. This ensures that updates in the child are reflected in the parent, and vice versa.
+With `@Binding`, we declare that a property in the child view is not owned by the child but instead references a value managed elsewhere — typically the parent. This ensures that updates in the child are reflected in the parent, and vice versa.
 
 
 ### Example: Using @Binding for Two-Way Communication
-Here’s how to use @Binding to enable a child view to update a parent’s state:
+Here’s how to use `@Binding` to enable a child view to update a parent’s state:
 
  ### Example:
 
@@ -182,6 +182,67 @@ struct ChildView: View {
     }
 }
 ```
+
+### UIKit vs SwiftUI
+
+In UIKit we use delegate methods to pass data back from a child to a parent, for example, we use UITextFieldDelegate to pass back methods such as textDidChange to the view where the textfield is created and take the values from there
+
+### Example (UIKit):
+```swift
+import UIKit
+
+class ViewController: UIViewController, UITextFieldDelegate {
+
+    let textField = UITextField()
+    let label = UILabel()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        textField.frame = CGRect(x: 20, y: 100, width: 280, height: 40)
+        textField.delegate = self
+        view.addSubview(textField)
+
+        label.frame = CGRect(x: 20, y: 160, width: 280, height: 40)
+        label.text = "Start typing..."
+        view.addSubview(label)
+    }
+
+    // UITextFieldDelegate method for detecting text change
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let text = textField.text, let textRange = Range(range, in: text) {
+            let updatedText = text.replacingCharacters(in: textRange, with: string)
+            label.text = updatedText
+        }
+        return true
+    }
+}
+```
+
+But in SwiftUI, we can **bind** a `@State` variable to achieve the same result
+
+### Example (SwiftUI):
+
+```swift
+struct ContentView: View {
+    @State private var text: String = ""
+
+    var body: some View {
+        VStack {
+            TextField("Enter text...", text: $text)
+            Text(text.isEmpty ? "Start typing..." : text)
+        }
+    }
+}
+```
+
+### **Key Differences**
+| UIKit (Imperative) | SwiftUI (Declarative) |
+|--------------------|----------------------|
+| Uses a delegate (`UITextFieldDelegate`) to detect text changes | Uses `@State` for automatic state updates |
+| Requires manually updating UI (`label.text = updatedText`) | UI updates automatically when `text` changes |
+| More boilerplate code | More concise and readable |
+
 
 ## 4. Components
 

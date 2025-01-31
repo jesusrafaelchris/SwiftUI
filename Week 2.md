@@ -39,11 +39,11 @@ So, how can we manage this state change?
 
 ## 2. State Properties: @State
 
-SwiftUI introduces the @State property wrapper to handle a view’s local state. It enables us to manage small, transient pieces of data specific to a single view.
+SwiftUI introduces the `@State` property wrapper to handle a view’s local state. It enables us to manage small, transient pieces of data specific to a single view.
 
 ### Why @State?
 
-@State allows us to work around the limitation of structs: we know we can’t change their properties because structs are immutable, but @State allows that value to be stored separately by SwiftUI in a place where it can be modified.
+`@State` allows us to work around the limitation of structs: we know we can’t change their properties because structs are immutable, but `@State` allows that value to be stored separately by SwiftUI in a place where it can be modified.
 
 This means that when the state changes, SwiftUI automatically re-renders the view to reflect those changes.
 
@@ -113,7 +113,7 @@ struct ChildView: View {
 
 Sometimes, we want a child view to modify state that is managed by its parent. In such cases, SwiftUI provides the `@Binding` property wrapper.
 
-`@Bindin`g creates a two-way connection between a parent’s state and the child view. This allows the child to read the state and also modify it, while keeping the source of truth in the parent.
+`@Binding` creates a two-way connection between a parent’s state and the child view. This allows the child to read the state and also modify it, while keeping the source of truth in the parent.
 
 ### How @Binding Works
 
@@ -183,6 +183,40 @@ struct ChildView: View {
 }
 ```
 
+### Behind the Scenes 
+
+Under the hood, `@Binding` is a property wrapper around `Binding<Value>`.  
+It allows child views to modify a state value owned by a parent **without creating a new source of truth**.  
+
+#### **How `@Binding` Works Internally**  
+
+```swift
+struct ToggleView: View {
+    @Binding var isOn: Bool // Binding reference
+
+    var body: some View {
+        Toggle("Enable feature", isOn: $isOn)
+    }
+}
+```
+
+This is **syntactic sugar** for something like this:
+
+```swift
+struct ToggleView: View {
+    var _isOn: Binding<Bool> // Underlying storage
+
+    var isOn: Bool {
+        get { _isOn.wrappedValue }
+        nonmutating set { _isOn.wrappedValue = newValue }
+    }
+
+    var body: some View {
+        Toggle("Enable feature", isOn: _isOn)
+    }
+}
+```
+
 ### UIKit vs SwiftUI
 
 In UIKit we use delegate methods to pass data back from a child to a parent, for example, we use UITextFieldDelegate to pass back methods such as textDidChange to the view where the textfield is created and take the values from there
@@ -233,6 +267,13 @@ struct ContentView: View {
             Text(text.isEmpty ? "Start typing..." : text)
         }
     }
+}
+```
+
+We already *"do this"* with our `ViewModelProtocol`, where we **bind** a delegate to the view.
+```swift
+ func bind(_ delegate: Delegate) {
+    self.delegate = delegate
 }
 ```
 
@@ -481,7 +522,7 @@ This two-way communication is possible because of the `@Binding` property wrappe
 
 Now that we’ve explored @State, @Binding, and some key SwiftUI components, let’s try a fun example to solidify these concepts.
 
-<img src="https://github.com/user-attachments/assets/16481bbf-f6bf-491d-898b-26eaa41f0f68" width=250/>
+<img src="https://github.com/user-attachments/assets/d4f3836d-4939-490f-9eb4-20d2305add62" width=250/>
 
 <details>
   <summary>Click to reveal the answer</summary>
@@ -489,31 +530,28 @@ Now that we’ve explored @State, @Binding, and some key SwiftUI components, let
     import SwiftUI
     
     struct ParentView: View {
-        @State private var age = 0
-        @State private var email: String = ""
-        @State private var password: String = ""
-        @State private var isOver18: Bool = false
+        @State private var wins = 0
+        @State private var sticker: String = ""
+        @State private var pineapple: Bool = false
     
         var body: some View {
             VStack {
-                Text("Enter your information")
+                Text("Answer these questions:")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 32)
                 VStack(spacing: 20) {
-                    TextField("Email", text: $email)
+                    TextField("What is the best iOS slack sticker?", text: $sticker)
                         .textFieldStyle(.roundedBorder)
-                    SecureField("Password", text: $password)
-                        .textFieldStyle(.roundedBorder)
-                    Toggle("Do you love SwiftUI?", isOn: $isOver18)
-                    ChildView(age: $age)
+                    Toggle("Does pineapple belong on pizza?", isOn: $pineapple)
+                    ChildView(wins: $wins)
                 }
             }
             .frame(maxHeight: .infinity, alignment: .center)
             .padding()
             .overlay(alignment: .bottom) {
                 Button {
-                    print(email, password, isOver18, age)
+                    print(sticker, pineapple, wins)
                 } label: {
                     HStack {
                         Text("Confirm")
@@ -533,16 +571,16 @@ Now that we’ve explored @State, @Binding, and some key SwiftUI components, let
     }
     
     struct ChildView: View {
-        @Binding var age: Int
+        @Binding var wins: Int
         
         var body: some View {
             HStack(spacing: 12) {
-                Text("Age in years: \(age)")
+                Text("How many volleyball matches has Valerio won?: \(wins)")
                 Spacer()
                 Button {
-                    age += 1
+                    wins -= 1
                 } label: {
-                    Text("+")
+                    Text("-")
                         .foregroundStyle(.white)
                         .padding()
                         .background {
@@ -550,9 +588,9 @@ Now that we’ve explored @State, @Binding, and some key SwiftUI components, let
                         }
                 }
                 Button {
-                    age -= 1
+                    wins += 1
                 } label: {
-                    Text("-")
+                    Text("+")
                         .padding()
                         .foregroundStyle(.white)
                         .background {
@@ -566,4 +604,5 @@ Now that we’ve explored @State, @Binding, and some key SwiftUI components, let
     #Preview {
         ParentView()
     }
+
 </details> 

@@ -183,12 +183,10 @@ struct ChildView: View {
 }
 ```
 
-### Behind the Scenes 
+### **How `@Binding` Works Internally**  
 
 Under the hood, `@Binding` is a property wrapper around `Binding<Value>`.  
 It allows child views to modify a state value owned by a parent **without creating a new source of truth**.  
-
-#### **How `@Binding` Works Internally**  
 
 ```swift
 struct ToggleView: View {
@@ -200,7 +198,7 @@ struct ToggleView: View {
 }
 ```
 
-This is **syntactic sugar** for something like this:
+This is **equivalent** to something like this:
 
 ```swift
 struct ToggleView: View {

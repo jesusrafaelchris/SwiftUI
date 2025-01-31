@@ -215,6 +215,12 @@ struct ToggleView: View {
 }
 ```
 
+`wrappedValue` is a computed property that gives you direct access to the actual value stored inside property wrappers like `@State` and `@Binding`.
+
+- `wrappedValue` unwraps a property wrapper and gives you the underlying value.
+- When you read `wrappedValue`, you get the stored value.
+- When you write to `wrappedValue`, it updates the stored value.
+
 ### UIKit vs SwiftUI
 
 In UIKit we use delegate methods to pass data back from a child to a parent, for example, we use UITextFieldDelegate to pass back methods such as textDidChange to the view where the textfield is created and take the values from there

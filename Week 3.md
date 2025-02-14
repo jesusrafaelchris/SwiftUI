@@ -198,7 +198,7 @@ init(viewModel: ViewModel) {
 }
 ```
 
-- `viewModel` is the instance that has been passed into the initializer (injected from a parent view or external source).
+- `viewModel` is the instance that has been passed into the initializer (injected from external source).
 - `self._viewModel` is the **underlying storage** for the `@StateObject` property.
 - `StateObject(wrappedValue: viewModel)` assigns the injected `viewModel` instance to the `StateObject` property, ensuring it’s correctly managed by SwiftUI, while still respecting the externally provided instance.
 

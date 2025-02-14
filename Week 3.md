@@ -216,9 +216,9 @@ It's very similar to `@StateObject`, however, **`@ObservedObject` does not own t
 
 The most important difference lies in **ownership** — specifically, who owns and manages the lifecycle of the `ObservableObject`.
 
-- **`@StateObject`** is used when the view **owns** the `ViewModel` (or `ObservableObject`). The view is responsible for creating and keeping the object alive. When a view first creates the `ViewModel`, it should use `@StateObject`.
+- `@StateObject` is used when the view **owns** the `ViewModel` (or `ObservableObject`). The view is responsible for creating and keeping the object alive. When a view first creates the `ViewModel`, it should use `@StateObject`.
   
-- **`@ObservedObject`** is used when the view does **not own** the `ViewModel` but simply wants to observe it. Other views that are provided with an existing `ViewModel` instance should use `@ObservedObject`.
+- `@ObservedObject` is used when the view does **not own** the `ViewModel` but simply wants to observe it. Other views that are provided with an existing `ViewModel` instance should use `@ObservedObject`.
 
 For example:
 
@@ -256,8 +256,8 @@ In this example, the `ParentView` is responsible for creating and keeping the `v
 
 #### **Summary:**
 
-- **`@StateObject`:** Use when a view is **creating** and **owning** the `ObservableObject`. It ensures the object persists and is kept alive during the view’s lifecycle.
-- **`@ObservedObject`:** Use when a view is simply **observing** an existing `ObservableObject` passed from another view. It does not own or manage the lifecycle of the object.
+- `@StateObject`: Use when a view is **creating** and **owning** the `ObservableObject`. It ensures the object persists and is kept alive during the view’s lifecycle.
+- `@ObservedObject`: Use when a view is simply **observing** an existing `ObservableObject` passed from another view. It does not own or manage the lifecycle of the object.
 
 ## **4. Inherited state using `@EnvironmentObject`**
 
@@ -321,11 +321,11 @@ struct ChildView: View {
 
 What's happening here:
 
-- **`UserSettings`**: A simple `ObservableObject` that contains a `username` and a `darkMode` flag.
+- `UserSettings`: A simple `ObservableObject` that contains a `username` and a `darkMode` flag.
   
-- **`ContentView`**: The parent view creates a `UserSettings` object and provides it to the environment using `.environmentObject(userSettings)`. This makes `UserSettings` available to all child views.
+- `ContentView`: The parent view creates a `UserSettings` object and provides it to the environment using `.environmentObject(userSettings)`. This makes `UserSettings` available to all child views.
 
-- **`ChildView`**: This child view uses `@EnvironmentObject` to access the shared `UserSettings` object. It doesn't need to be explicitly passed down as a property because it's automatically available through the environment.
+- `ChildView`: This child view uses `@EnvironmentObject` to access the shared `UserSettings` object. It doesn't need to be explicitly passed down as a property because it's automatically available through the environment.
 
 In this example, the `UserSettings` object is shared between `ContentView` and `ChildView` without directly passing the object from one view to another. Any change in `UserSettings` (like toggling dark mode or changing the username) will automatically trigger UI updates in both the parent and child views, thanks to the `@Published` properties and `@EnvironmentObject` usage.
 
@@ -349,3 +349,7 @@ While `@EnvironmentObject` is powerful for global state, be mindful of overusing
 | **`@StateObject`**        | When the view **owns** and creates the view model or data object. | Initialize the object directly within the view.         | View **owns** the object and is responsible for its lifecycle. | Yes, updates views when `@Published` properties change.        |
 | **`@ObservedObject`**     | When the view does **not own** the view model or data object but wants to observe it. | The object is passed in from another view or external source. | View does not own the object; it is passed down. | Yes, updates views when `@Published` properties change.        |
 | **`@EnvironmentObject`**  | When the view needs to **access shared, global state** across many views in the app. | The object is injected into the environment by a parent view, often via `@StateObject`. | View does not own the object; it’s injected into the environment. | Yes, updates all views accessing the object when `@Published` properties change. |
+
+## 5. Let's try an example
+
+Now that we’ve explored `@StateObject`, `@Published`, `@ObservedObject` and `@EnvironmentObject` let’s try a fun example to solidify these concepts.

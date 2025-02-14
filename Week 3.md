@@ -5,7 +5,7 @@ This week, we’ll dive into handling data flow between views and view models. W
 
 ## 1. Managing external state with ObservableObject
 
-In SwiftUI, ObservableObject is a protocol that allows an object to publish changes to its properties so that SwiftUI views can react accordingly. When a property inside an ObservableObject is marked with @Published, any change to that property triggers a UI update for views observing it.
+In SwiftUI, `ObservableObject` is a protocol that allows an object to publish changes to its properties so that SwiftUI views can react accordingly. When a property inside an `ObservableObject` is marked with `@Published`, any change to that property triggers a UI update for views observing it.
 
 To allow a `ViewModel` to publish its properties to a SwiftUI view, it must conform to the `ObservableObject` protocol.  
 

@@ -44,7 +44,7 @@ The `@Published` property wrapper is used inside an `ObservableObject` to notify
       @Published var count = 0
   }
   ```
-Now, the **view** is responsible for consuming the state and laying out the UI, while the **ViewModel** manages the state, handles logic, and publishes changes.  
+Now, the **ViewModel** manages the state, handles logic, and publishes changes while the **View** is responsible for consuming the state and laying out the UI.
 
 By separating concerns this way:  
 - The **ViewModel** takes care of data management and updates.  

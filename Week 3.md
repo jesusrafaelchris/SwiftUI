@@ -341,6 +341,8 @@ Make sure the object is provided to the environment before any child views attem
   
 While `@EnvironmentObject` is powerful for global state, be mindful of overusing it. Too many environment objects in a large app can lead to less maintainable code. Use it for shared, app-wide data, but consider other approaches for localized state.
 
+`@EnvironmentObject` doesn't work directly with hosting controllers because they don’t have access to the environment by default.
+
 
 #### `@StateObject` vs `@ObservedObject` vs `@EnvironmentObject`:
 

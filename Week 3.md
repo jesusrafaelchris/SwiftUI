@@ -358,8 +358,7 @@ Let's make a view that changes based on whether the theme is light or dark.
 
 | Light Theme | Dark Theme |
 |-------------|------------|
-| <img src="" width=250/> | <img src="" width=250/> |
-
+| <img src="https://github.com/user-attachments/assets/91c8d453-8663-4d1e-955d-043abc3040a4" width=250/> | <img src="https://github.com/user-attachments/assets/bc6dfe6f-db48-47b3-8459-f27853be3f72" width=250/> |
 
 Let's begin with the parent view, where we’ll inject the `viewModel` into the child view:
 

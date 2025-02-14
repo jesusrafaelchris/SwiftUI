@@ -259,3 +259,93 @@ In this example, the `ParentView` is responsible for creating and keeping the `v
 - **`@StateObject`:** Use when a view is **creating** and **owning** the `ObservableObject`. It ensures the object persists and is kept alive during the view’s lifecycle.
 - **`@ObservedObject`:** Use when a view is simply **observing** an existing `ObservableObject` passed from another view. It does not own or manage the lifecycle of the object.
 
+## **4. Inherited state using `@EnvironmentObject`**
+
+### **What is `@EnvironmentObject`?**
+
+`@EnvironmentObject` is another property wrapper in SwiftUI that allows views to **inherit** state from a shared object in the app’s environment. It is a way to **inject shared data** that many views need to access or modify without passing it down explicitly through the view hierarchy.
+
+Unlike `@StateObject` or `@ObservedObject`, which are typically used for local or passed-down view models, `@EnvironmentObject` is designed for shared state across **multiple views** in different parts of the app.
+
+When you use `@EnvironmentObject`, the object must be **provided** somewhere higher in the view hierarchy, and any view that needs it can **access** it. This is especially useful for things like global application state, user settings, or themes, where many views might need access to the same data.
+
+#### **How It Works:**
+
+1. **Create an Observable Object** – Just like with `@StateObject` and `@ObservedObject`, the object you want to share across views must conform to `ObservableObject` and have properties annotated with `@Published` to trigger updates.
+   
+2. **Provide the Environment Object** – Use the `.environmentObject()` modifier to provide the shared object to the view hierarchy. This can be done at any level in the view tree, usually in a parent view or the root of your app.
+
+3. **Consume the Environment Object** – Any child view or descendant in the view hierarchy can use `@EnvironmentObject` to access the shared object.
+
+#### **Example of Using `@EnvironmentObject`:**
+
+Let's walk through an example where we share a `UserSettings` object that manages some app-wide settings.
+
+```swift
+// 1. Create the ObservableObject
+class UserSettings: ObservableObject {
+    @Published var username: String = "Guest"
+    @Published var darkMode: Bool = false
+}
+
+struct ContentView: View {
+    @StateObject private var userSettings = UserSettings()  // The parent view creates the object
+
+    var body: some View {
+        // 2. Provide the UserSettings to the environment
+        VStack {
+            Text("Welcome, \(userSettings.username)!")
+            Button("Toggle Dark Mode") {
+                userSettings.darkMode.toggle()
+            }
+            
+            // Passing the object to the child views
+            ChildView()
+        }
+        .environmentObject(userSettings)  // Inject the environment object
+    }
+}
+
+struct ChildView: View {
+    // 3. Consume the environment object
+    @EnvironmentObject var userSettings: UserSettings
+
+    var body: some View {
+        VStack {
+            Text("Dark Mode is \(userSettings.darkMode ? "On" : "Off")")
+            Text("Username: \(userSettings.username)")
+        }
+    }
+}
+```
+
+What's happening here:
+
+- **`UserSettings`**: A simple `ObservableObject` that contains a `username` and a `darkMode` flag.
+  
+- **`ContentView`**: The parent view creates a `UserSettings` object and provides it to the environment using `.environmentObject(userSettings)`. This makes `UserSettings` available to all child views.
+
+- **`ChildView`**: This child view uses `@EnvironmentObject` to access the shared `UserSettings` object. It doesn't need to be explicitly passed down as a property because it's automatically available through the environment.
+
+In this example, the `UserSettings` object is shared between `ContentView` and `ChildView` without directly passing the object from one view to another. Any change in `UserSettings` (like toggling dark mode or changing the username) will automatically trigger UI updates in both the parent and child views, thanks to the `@Published` properties and `@EnvironmentObject` usage.
+
+#### **Why Use `@EnvironmentObject`?**
+
+- **Global State**: Use `@EnvironmentObject` when you need to share data across multiple views or even in the entire app. This is ideal for things like settings, authentication states, or themes.
+
+When the `@Published` properties of the `EnvironmentObject` change, any views that depend on them will automatically update, making it ideal for state that changes dynamically and needs to be reflected across the UI.
+
+#### **Considerations:**
+
+Make sure the object is provided to the environment before any child views attempt to access it. If a view tries to access an `@EnvironmentObject` before it is provided, SwiftUI will crash with an error.
+  
+While `@EnvironmentObject` is powerful for global state, be mindful of overusing it. Too many environment objects in a large app can lead to less maintainable code. Use it for shared, app-wide data, but consider other approaches for localized state.
+
+
+#### `@StateObject` vs `@ObservedObject` vs `@EnvironmentObject`:
+
+| **Property Wrapper**     | **When to Use**                                             | **Initialization**                                    | **Ownership**                         | **Automatic UI Updates**                                       |
+|--------------------------|-------------------------------------------------------------|--------------------------------------------------------|---------------------------------------|-----------------------------------------------------------------|
+| **`@StateObject`**        | When the view **owns** and creates the view model or data object. | Initialize the object directly within the view.         | View **owns** the object and is responsible for its lifecycle. | Yes, updates views when `@Published` properties change.        |
+| **`@ObservedObject`**     | When the view does **not own** the view model or data object but wants to observe it. | The object is passed in from another view or external source. | View does not own the object; it is passed down. | Yes, updates views when `@Published` properties change.        |
+| **`@EnvironmentObject`**  | When the view needs to **access shared, global state** across many views in the app. | The object is injected into the environment by a parent view, often via `@StateObject`. | View does not own the object; it’s injected into the environment. | Yes, updates all views accessing the object when `@Published` properties change. |

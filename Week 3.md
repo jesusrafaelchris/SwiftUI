@@ -249,8 +249,8 @@ struct ChildView: View {
 }
 ```
 
-- **`ParentView`** owns the `viewModel`, so it uses `@StateObject` to create and manage the lifecycle of the `ViewModel`.
-- **`ChildView`** only observes the `viewModel` passed from the parent, so it uses `@ObservedObject`.
+- `ParentView` owns the `viewModel`, so it uses `@StateObject` to create and manage the lifecycle of the `ViewModel`.
+- `ChildView` only observes the `viewModel` passed from the parent, so it uses `@ObservedObject`.
 
 In this example, the `ParentView` is responsible for creating and keeping the `viewModel` alive, while the `ChildView` simply reacts to changes in `viewModel`.
 
@@ -346,10 +346,79 @@ While `@EnvironmentObject` is powerful for global state, be mindful of overusing
 
 | **Property Wrapper**     | **When to Use**                                             | **Initialization**                                    | **Ownership**                         | **Automatic UI Updates**                                       |
 |--------------------------|-------------------------------------------------------------|--------------------------------------------------------|---------------------------------------|-----------------------------------------------------------------|
-| **`@StateObject`**        | When the view **owns** and creates the view model or data object. | Initialize the object directly within the view.         | View **owns** the object and is responsible for its lifecycle. | Yes, updates views when `@Published` properties change.        |
-| **`@ObservedObject`**     | When the view does **not own** the view model or data object but wants to observe it. | The object is passed in from another view or external source. | View does not own the object; it is passed down. | Yes, updates views when `@Published` properties change.        |
-| **`@EnvironmentObject`**  | When the view needs to **access shared, global state** across many views in the app. | The object is injected into the environment by a parent view, often via `@StateObject`. | View does not own the object; it’s injected into the environment. | Yes, updates all views accessing the object when `@Published` properties change. |
+| `@StateObject`        | When the view **owns** and creates the view model or data object. | Initialize the object directly within the view.         | View **owns** the object and is responsible for its lifecycle. | Yes, updates views when `@Published` properties change.        |
+| `@ObservedObject`     | When the view does **not own** the view model or data object but wants to observe it. | The object is passed in from another view or external source. | View does not own the object; it is passed down. | Yes, updates views when `@Published` properties change.        |
+| `@EnvironmentObject`  | When the view needs to **access shared, global state** across many views in the app. | The object is injected into the environment by a parent view, often via `@StateObject`. | View does not own the object; it’s injected into the environment. | Yes, updates all views accessing the object when `@Published` properties change. |
 
 ## 5. Let's try an example
 
 Now that we’ve explored `@StateObject`, `@Published`, `@ObservedObject` and `@EnvironmentObject` let’s try a fun example to solidify these concepts.
+
+Let's make a view that changes based on whether the theme is light or dark.
+
+| Light Theme | Dark Theme |
+|-------------|------------|
+| <img src="" width=250/> | <img src="" width=250/> |
+
+
+Let's begin with the parent view, where we’ll inject the `viewModel` into the child view:
+
+```swift
+struct ParentView6: View {
+
+    var body: some View {
+        ContentView6(viewModel: ViewModel())  // Inject the ViewModel into the child
+    }
+}
+```
+
+<details>
+  <summary>Click to reveal the answer</summary>
+
+    import SwiftUI
+
+    class ViewModel: ObservableObject {
+        @Published var isDarkMode = false
+
+        func toggleTheme() {
+            isDarkMode.toggle()
+        }
+    }
+
+    struct ContentView6: View {
+        @StateObject private var viewModel: ViewModel
+        
+        init(viewModel: ViewModel) {
+            self._viewModel = StateObject(wrappedValue: viewModel)
+        }
+        
+        var body: some View {
+            VStack {
+                Text("Current theme: \(viewModel.isDarkMode ? "Dark" : "Light")")
+                    .foregroundStyle(viewModel.isDarkMode ? .white : .black)
+                    .padding()
+                
+                Button("Toggle Theme") {
+                    viewModel.toggleTheme()
+                }
+                .padding()
+            }
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(viewModel.isDarkMode ? .black : .white)
+            }
+        }
+    }
+
+    struct ParentView6: View {
+
+        var body: some View {
+            ContentView6(viewModel: ViewModel())
+        }
+    }
+    
+    #Preview {
+        ParentView6()
+    }
+
+</details> 

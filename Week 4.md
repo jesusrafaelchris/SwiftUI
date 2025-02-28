@@ -1,7 +1,7 @@
 # Week 4: Advanced Layout Techniques 
 
 ## Overview  
-This week, we’ll dive into advanced layout techniques, including using ForEach to display dynamic content, working with List, LazyVStack + LazyHStack, ScrollView, and taking a first look at view lifecycle events.
+This week, we’ll dive into advanced layout techniques, including using ForEach to display dynamic content, working with `List`, `LazyVStack` + `LazyHStack`, `ScrollView`, and taking a first look at view lifecycle events.
 
 ## 1. Creating Views in a Loop with ForEach
 
@@ -43,9 +43,9 @@ Generic struct 'ForEach' requires that 'Item' conform to 'Hashable'
 
 ### What do `Hashable` and `Identifiable` mean?
 
-- **`Hashable`**: Allows items to be compared for uniqueness, enabling efficient updates. It's especially useful when the item itself is the identifier, like with `id: \.self` in `ForEach`. Simple types like `Int` and `String` automatically conform to `Hashable`.
+- `Hashable`: Allows items to be compared for uniqueness, enabling efficient updates. It's especially useful when the item itself is the identifier, like with `id: \.self` in `ForEach`. Simple types like `Int` and `String` automatically conform to `Hashable`.
 
-- **`Identifiable`**: Provides a stable, unique identifier for each item via the `id` property. SwiftUI uses this to track items and ensure they are correctly identified, even if the collection changes.
+- `Identifiable`: Provides a stable, unique identifier for each item via the `id` property. SwiftUI uses this to track items and ensure they are correctly identified, even if the collection changes.
 
 When using simple types like `String` or `Int` in `ForEach`, they already conform to `Hashable`, so SwiftUI can automatically use `id: \.self`. However, for more complex types, this automatic synthesis isn’t available. In these cases, you need to explicitly conform to `Identifiable` and implement an `id` property.
 
@@ -105,9 +105,9 @@ struct ContentView: View {
 }
 ```
 
-- **`id: \.self`** works with simple types that conform to `Hashable`, allowing SwiftUI to automatically track and update items.
-- For custom structs, you need to conform to **`Identifiable`** by providing a unique `id` property.
-- **`Hashable`** allows efficient updates by enabling comparisons of items, while **`Identifiable`** provides a stable unique identifier.
+- `id: \.self` works with simple types that conform to `Hashable`, allowing SwiftUI to automatically track and update items.
+- For custom structs, you need to conform to `Identifiable` by providing a unique `id` property.
+- `Hashable` allows efficient updates by enabling comparisons of items, while `Identifiable` provides a stable unique identifier.
 
 
 ## 2. LazyVStack and LazyHStack

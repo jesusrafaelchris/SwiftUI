@@ -418,3 +418,82 @@ SwiftUI also automatically manages the lifecycle of the `.task`, ensuring that i
 
 Now that we've mastered using LazyVStack, LazyHStack, List ScrollViews and View lifecycle events, let's go through an example to demonstrate them.
 
+
+<details>
+  <summary>Click to reveal the answer</summary>
+  
+  
+    import SwiftUI
+
+    class ViewModel: ObservableObject {
+        @Published var items: [Int] = []
+        
+        func setItems() {
+            items = Array(1...10)
+        }
+        
+        func addItem() {
+            if let lastItem = items.last {
+                items.append(lastItem + 1)
+            } else {
+                items.append(1)
+            }
+        }
+        
+        func clearItems() {
+            items.removeAll()
+        }
+    }
+
+    struct ExampleView: View {
+        
+        @StateObject var viewModel = ViewModel()
+        
+        var body: some View {
+            VStack {
+                ScrollView {
+                    LazyVStack {
+                        ForEach(viewModel.items, id: \.self) { item in
+                            Text("Item \(item)")
+                                .padding()
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(8)
+                                .padding(.horizontal)
+                        }
+                    }
+                }
+                buttons
+            }
+            .padding(.top)
+            .onAppear() {
+                viewModel.setItems()
+            }
+        }
+        
+        private var buttons: some View {
+            HStack {
+                Button("Add Item") {
+                    viewModel.addItem()
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding()
+                .background(Capsule().fill(Color.green))
+                .foregroundColor(.white)
+                
+                
+                Button("Clear Items") {
+                    viewModel.clearItems()
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding()
+                .background(Capsule().fill(Color.red))
+                .foregroundColor(.white)
+            }
+            .padding()
+        }
+    }
+
+    #Preview {
+        ExampleView()
+    }
+</details> 

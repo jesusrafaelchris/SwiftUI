@@ -417,6 +417,7 @@ SwiftUI also automatically manages the lifecycle of the `.task`, ensuring that i
 ## 5. Let's go through an example
 
 Now that we've mastered using LazyVStack, LazyHStack, List ScrollViews and View lifecycle events, let's go through an example to demonstrate them.
+<img width="280" alt="Screenshot 2025-02-28 at 10 59 46" src="https://github.com/user-attachments/assets/2840eea0-3b79-491d-bee4-e4d5b7c6e584" />
 
 
 <details>

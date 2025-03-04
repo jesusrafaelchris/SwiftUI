@@ -51,7 +51,7 @@ When using simple types like `String` or `Int` in `ForEach`, they already confor
 
 ### Example 1: Conforming to `Identifiable`
 
-Here’s an example where we conform a custom struct to `Identifiable` and use `id: \.id`:
+Here’s an example where we make a custom struct conform to `Identifiable` and use `id: \.id` in a `ForEach` loop:
 
 ```swift
 struct Item: Identifiable {
@@ -76,6 +76,18 @@ struct ContentView: View {
     }
 }
 ```
+
+Since `Item` conforms to `Identifiable`, we don’t actually need to specify `id: \.id`, SwiftUI will infer it automatically. 
+
+So we can simplify the `ForEach` like this:
+
+```swift
+ForEach(items) { item in
+    Text(item.name)
+}
+```  
+
+This makes the code cleaner while still ensuring that SwiftUI correctly tracks each item by its unique `id`.
 
 ### Example 2: Conforming to `Hashable`
 
@@ -108,6 +120,86 @@ struct ContentView: View {
 - `id: \.self` works with simple types that conform to `Hashable`, allowing SwiftUI to automatically track and update items.
 - For custom structs, you need to conform to `Identifiable` by providing a unique `id` property.
 - `Hashable` allows efficient updates by enabling comparisons of items, while `Identifiable` provides a stable unique identifier.
+
+### What Happens if an Item Has the Same ID?  
+
+In SwiftUI, each item in a `ForEach` or `List` must have a **unique identifier**. If two or more items share the same `id`, SwiftUI may not correctly track them, leading to rendering issues, unexpected behavior, or even crashes.  
+
+#### Common Issues with Duplicate IDs:  
+- **Missing or Incorrect UI Updates** – SwiftUI may only display one of the duplicated items or fail to refresh the view when data changes.  
+- **Crashes** – SwiftUI may throw an error if duplicate IDs cause inconsistencies in its diffing algorithm.  
+- **Unpredictable Behavior** – Items may disappear, appear in the wrong order, or fail to animate properly.  
+
+For example:
+
+```swift
+struct Item: Identifiable {
+    let id: Int  // This must be unique!
+    let name: String
+}
+
+let items = [
+    Item(id: 1, name: "Item A"),
+    Item(id: 1, name: "Item B") // Duplicate ID!
+]
+
+List(items) { item in
+    Text(item.name)
+}
+```
+
+Since both items have `id: 1`, SwiftUI will fail to distinguish them properly.
+
+#### The Error You Might See:  
+If duplicate IDs cause issues, you may encounter an error like:  
+
+```swift
+ForEach<Array<Item>, Int, Text>: the ID 1 occurs multiple times within the collection, this will give undefined results!
+```
+or  
+```
+SwiftUI: ForEach(_:id:content:) encountered duplicate identifiers
+```
+This means SwiftUI is trying to create two views with the same identifier, which isn't allowed. 
+
+
+To fix this, make sure each item is uniquely identifiable.
+
+You might be tempted to use UUID() as an easy way to ensure uniqueness, but it can lead to issues when SwiftUI tries to diff and update views.  
+
+#### Problems with `UUID()` as an ID 
+
+1. **New ID on Every Update**  
+   ```swift
+   struct Item: Identifiable {
+       let id = UUID()  // Generates a new ID each time
+       let name: String
+   }
+   ```
+   
+   Since `UUID()` generates a new value each time an instance is created, SwiftUI will treat the item as **entirely new** on every update, even if only some data has changed. 
+   
+   This can cause:  
+   - Flickering UI when views are unnecessarily recreated  
+   - Lost animations and transitions  
+   - Inefficient rendering  
+
+2. **Breaks State Persistence**  
+   If SwiftUI sees a new `id`, it destroys and recreates the view instead of updating it. This means that:  
+   - Text fields lose focus
+   - Scroll position resets
+   - User input is lost
+   - And more
+
+3. **Inefficient Diffing**  
+   SwiftUI uses `id` to efficiently track changes. With randomly changing UUIDs, SwiftUI cannot determine what actually changed, leading to unnecessary recomputation.  
+
+#### When Should You Use `UUID()`?  
+
+Using `UUID()` as an ID is acceptable when:  
+- The items **never update** after being created  
+- The list is purely static  
+- You explicitly want each item to be treated as new on every refresh  
 
 
 ## 2. LazyVStack and LazyHStack

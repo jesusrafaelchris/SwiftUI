@@ -1,7 +1,7 @@
 # Week 4: Advanced Layout Techniques 
 
 ## Overview  
-This week, we’ll dive into advanced layout techniques, including using ForEach to display dynamic content, working with `List`, `LazyVStack` + `LazyHStack`, `ScrollView`, and taking a first look at view lifecycle events.
+This week, we’ll dive into advanced layout techniques, including using `ForEach` to display dynamic content, working with `List`, `LazyVStack` + `LazyHStack`, `ScrollView`, and taking a first look at view lifecycle events.
 
 ## 1. Creating Views in a Loop with ForEach
 
@@ -162,10 +162,7 @@ SwiftUI: ForEach(_:id:content:) encountered duplicate identifiers
 ```
 This means SwiftUI is trying to create two views with the same identifier, which isn't allowed. 
 
-
-To fix this, make sure each item is uniquely identifiable.
-
-You might be tempted to use UUID() as an easy way to ensure uniqueness, but it can lead to issues when SwiftUI tries to diff and update views.  
+To fix duplicate `id` issues, each item in your list should be uniquely identifiable. While using `UUID()` might seem like an easy solution, it can cause problems when SwiftUI tries to diff and update views.
 
 #### Problems with `UUID()` as an ID 
 
@@ -509,6 +506,7 @@ SwiftUI also automatically manages the lifecycle of the `.task`, ensuring that i
 ## 5. Let's go through an example
 
 Now that we've mastered using LazyVStack, LazyHStack, List ScrollViews and View lifecycle events, let's go through an example to demonstrate them.
+
 <img width="280" alt="Screenshot 2025-02-28 at 10 59 46" src="https://github.com/user-attachments/assets/2840eea0-3b79-491d-bee4-e4d5b7c6e584" />
 
 

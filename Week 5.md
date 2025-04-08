@@ -65,7 +65,7 @@ struct TestView: View {
 }
 ```
 
-This can quickly become overwhelming, and is similar to the **Massive View Controller** problem.
+This can quickly become difficult to manage, much like the **Massive View Controller** issue.
 
 ---
 
@@ -79,14 +79,15 @@ There are two common ways to break a subview out of your main view, and the choi
 
 1. **Private Computed Properties / Functions**  
    Use this when the subview is **simple** and only used **within the same view**. It keeps your file tidy without exposing internal layout details.
-
    - Use a **private computed property** if the subview doesn’t require parameters.
-   - Use a **private function** returning `some View` if the subview needs input.
+   - Use a **private function** returning `some View` if the subview needs input. <br/><br/>
 
    > ✅ Great for small, screen-specific UI elements that don’t warrant a separate struct.
 
+
 2. **Extracting to a Separate View Struct**  
-   Use this when the subview is **complex**, **reused in multiple places**, or deserves its own logic or styling.
+   
+   Use this when the subview is **complex**, **reused in multiple places**, or deserves its own logic or styling. <br/><br/>
 
    > ✅ Great for reusable components, isolated logic, or anything you'd want to test or preview independently.
 
@@ -158,11 +159,6 @@ private func itemView(for index: Int) -> some View {
 
 This makes it easier to reason about the structure and reuse logic if needed—without promoting these views to standalone components unless necessary.
 
----
-Nice—here’s a cleaner and more polished version of that explanation:
-
----
-
 ### Where to Define Subviews
 
 In our project, we typically use one of two patterns to define subviews that are only used within a single screen:
@@ -216,15 +212,9 @@ In our project, we typically use one of two patterns to define subviews that are
    ```
 ---
 
-Absolutely—here’s a much cleaner and more professional rewrite that adds clarity, structure, and a bit of polish:
-
----
-
 ### Extracting to a Separate View Struct
 
 When a subview becomes **too complex**, or if it’s **reused across multiple screens**, it’s a good idea to extract it into its own `View` struct. This keeps your main view concise, improves readability, and promotes reusability.
-
-#### Example
 
 Let’s say we have this inline view:
 
@@ -272,7 +262,7 @@ struct TestView: View {
 
 ### Passing in Data or Actions
 
-If your subview needs to respond to user interaction or display dynamic data, make it configurable with parameters:
+If your subview needs to respond to user interaction or display dynamic data, we can make it configurable with parameters:
 
 ```swift
 struct ReusableRowView: View {
@@ -361,7 +351,7 @@ struct TestView: View {
 }
 ```
 
-Much more readable than before!
+Much more readable than before, but could do with some further refinement!
 
 ---
 
@@ -419,6 +409,9 @@ We can now use it with the `modifier()` modifier on our view.
 Text("Important!")
     .modifier(HighlightedTextModifier())
 ```
+
+However, This doesn't look like what we're used to...
+
 ---
 
 ### Making It Cleaner with Extensions
@@ -453,9 +446,10 @@ As our codebase grows and more views are built using SwiftUI, it's important to 
 #### ✅ **Clear View Hierarchies**  
 Is the view composed of logical subviews, or is the `body` growing into a wall of nested brackets?
 
-A helpful rule of thumb: if you’re seeing more than 2–3 closing brackets in a row like this
+A helpful rule of thumb: if you’re seeing more than 3 closing brackets in a row like this
 
 ```swift
+            }
         }
     }
 }
@@ -531,11 +525,7 @@ For example, instead of manually applying `.background` and `.cornerRadius` to a
 
 #### ❓ **Management of Conditionals**
 
-Are there too many conditional statements cluttering the view?
-
-SwiftUI can struggle to resolve views with complex conditionals, so it's important to manage them effectively.
-
-As per our guidelines, we recommend using `.map` instead of traditional `if let` statements for optional unwrapping. This approach leads to cleaner, more concise code.
+As per our guidelines, we recommend using `.map` instead of traditional `if` statements. This approach leads to cleaner, more concise code.
 
 For example:
 
@@ -550,3 +540,4 @@ icon.url.map {
     MBLottieView(source: .remote($0))
 }
 ```
+

@@ -1,4 +1,4 @@
-### Week 5: Layout and Structure
+### Week 5: Mastering Layout & Structure
 
 **Overview:**  
 This week, we'll dive into effective layout techniques, including how to structure your views and separate layout concerns. We'll also learn how to create custom view modifiers and gain confidence in reviewing PR's.

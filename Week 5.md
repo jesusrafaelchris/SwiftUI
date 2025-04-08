@@ -527,7 +527,7 @@ For example, instead of manually applying `.background` and `.cornerRadius` to a
 
 As per our guidelines, we recommend using `.map` instead of traditional `if` statements. This approach leads to cleaner, more concise code.
 
-For example:
+If you see it, suggest to use `.map` instead, for example:
 
 ```swift
 // Before

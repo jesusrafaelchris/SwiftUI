@@ -1,7 +1,7 @@
 ### Week 5: Layout and Structure
 
 **Overview:**  
-This week, we'll dive into effective layout techniques, including how to structure your views and separate layout concerns. We'll also learn how to create custom view modifiers and refine your PR review process.
+This week, we'll dive into effective layout techniques, including how to structure your views and separate layout concerns. We'll also learn how to create custom view modifiers and gain confidence in reviewing PR's.
 
 ## 1. Structuring Your View Hierarchy
 
@@ -541,3 +541,41 @@ icon.url.map {
 }
 ```
 
+## 4. Let's go through an example
+
+In this section, we'll create a custom `ViewModifier` together.
+
+We'll create a `ViewModifier` that allows you to pass in a background color, a rounded rectangle with corner radius, and a border color. Each of these properties will be customizable, so you can reuse the modifier with different configurations.
+
+<details>
+    
+    import SwiftUI
+
+    struct RoundedViewModifier: ViewModifier {
+        var backgroundColor: Color
+        var cornerRadius: CGFloat
+        var borderColor: Color
+
+        func body(content: Content) -> some View {
+            content
+                .padding()
+                .background(backgroundColor)
+                .cornerRadius(cornerRadius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .stroke(borderColor, lineWidth: 2)
+                )
+        }
+    }
+
+    extension View {
+        func roundedView(backgroundColour: UIColor = .red,
+                                borderColour: UIColor? = nil,
+                                cornerRadius: CGFloat = 16) -> some View {
+            modifier(RoundedViewModifier(backgroundColour: backgroundColour,
+                                         borderColour: borderColour,
+                                         cornerRadius: cornerRadius))
+        }
+    }  
+
+</details>

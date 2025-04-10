@@ -78,16 +78,16 @@ Instead of placing every view in the main `body` which is difficult to maintain,
 There are two common ways to break a subview out of your main view, and the choice depends on the complexity and reuse potential of the subview:
 
 1. **Private Computed Properties / Functions**  
-   Use this when the subview is **simple** and only used **within the same view**. It keeps your file tidy without exposing internal layout details.
+   Use this when the subview is simple, only used within the same view and **doesn't hold or need any state**. It keeps your file tidy without exposing internal layout details.
    - Use a **private computed property** if the subview doesn’t require parameters.
-   - Use a **private function** returning `some View` if the subview needs input. <br/><br/>
+   - Use a **private function** returning `some View` if the subview needs input.
 
    > ✅ Great for small, screen-specific UI elements that don’t warrant a separate struct.
 
 
 2. **Extracting to a Separate View Struct**  
    
-   Use this when the subview is **complex**, **reused in multiple places**, or deserves its own logic or styling. <br/><br/>
+    Use this when the subview is complex, reused in multiple places, has its own logic or styling, and **needs to manage its own state**.
 
    > ✅ Great for reusable components, isolated logic, or anything you'd want to test or preview independently.
 

@@ -541,6 +541,10 @@ icon.url.map {
 }
 ```
 
+#### **Guidelines**
+
+All SwiftUI code should follow our [SwiftUI Guidelines](https://github.com/MoneyBox/Moneybox-iOS/wiki/SwiftUI-Guidelines). If you're ever unsure about something, that's the best place to check.
+
 ## 4. Let's go through an example
 
 In this section, we'll create a custom `ViewModifier` together.

@@ -556,29 +556,40 @@ We'll create a `ViewModifier` that allows you to pass in a background color, a r
     import SwiftUI
 
     struct RoundedViewModifier: ViewModifier {
-        var backgroundColor: Color
-        var cornerRadius: CGFloat
-        var borderColor: Color
+        let backgroundColor: Color
+        let cornerRadius: CGFloat
+        let borderColor: Color
+        let borderWidth: CGFloat = 2
 
         func body(content: Content) -> some View {
             content
                 .padding()
-                .background(backgroundColor)
-                .cornerRadius(cornerRadius)
+                .background(
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(backgroundColor)
+                )
                 .overlay(
                     RoundedRectangle(cornerRadius: cornerRadius)
-                        .stroke(borderColor, lineWidth: 2)
+                        .stroke(borderColor, lineWidth: borderWidth)
                 )
         }
     }
 
     extension View {
-        func roundedView(backgroundColour: UIColor = .red,
-                                borderColour: UIColor? = nil,
-                                cornerRadius: CGFloat = 16) -> some View {
-            modifier(RoundedViewModifier(backgroundColour: backgroundColour,
-                                         borderColour: borderColour,
-                                         cornerRadius: cornerRadius))
+        func roundedView(
+            backgroundColor: Color = .blue,
+            cornerRadius: CGFloat = 10,
+            borderColor: Color = .red
+        ) -> some View {
+            modifier(RoundedViewModifier(backgroundColor: backgroundColor, cornerRadius: cornerRadius, borderColor: borderColor))
+        }
+    }
+
+    struct ContentViewTest: View {
+        
+        var body: some View {
+            Text("SwiftUI is amazing")
+                .roundedView()
         }
     }  
 

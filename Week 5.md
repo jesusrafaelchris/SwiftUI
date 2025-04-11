@@ -499,6 +499,7 @@ Text("Hello")
     .background(Color.blue)
     .cornerRadius(10)
 ```
+![Screenshot 2025-04-11 at 12 01 15](https://github.com/user-attachments/assets/ed5d2cfe-8b8f-4aeb-9ffc-cdf096c15b9c)
 
 ```swift
 // Incorrect order
@@ -507,6 +508,7 @@ Text("Hello")
     .padding()
     .cornerRadius(10)
 ```
+![Screenshot 2025-04-11 at 12 01 24](https://github.com/user-attachments/assets/637cb890-e3f5-44a1-b1ef-4191466bc35b)
 
 #### 🦾 **Reuse and Duplication**  
 Are repeated patterns or views extracted into private views or helper methods?
@@ -550,6 +552,8 @@ All SwiftUI code should follow our [SwiftUI Guidelines](https://github.com/Money
 In this section, we'll create a custom `ViewModifier` together.
 
 We'll create a `ViewModifier` that allows you to pass in a background color, a rounded rectangle with corner radius, and a border color. Each of these properties will be customizable, so you can reuse the modifier with different configurations.
+
+<img src="https://github.com/user-attachments/assets/d88621a2-4e60-489f-be4e-927420ae800d" width="250" />
 
 <details>
     
